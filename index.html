@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primer Parcial</title>
+    
+    <style>
+        body {
+            background: grey;
+            font-family: system-ui, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .formDatosTitulo{
+            display: flex;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-style: italic;
+            font-weight: bold;
+            align-items: center;
+            flex-direction: column;
+            font-size: 18px;
+            text-decoration: underline;
+        }
+        .formDatos {
+            display: flex;
+            border: solid; 
+            border-color: black;
+            padding: 5px;
+            margin-top: 5px;
+            align-items: center;
+            flex-direction: column;
+          
+        }
+        .checkboxesFormDatos {
+            display: flex;
+            flex-direction: row;
+        }   
+        .tablaForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgb(51, 107, 153);
+            
+        }
+        .tabla {
+            table-layout: fixed;
+            border: 2px solid black;
+            border-collapse: collapse;    
+            
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        .formABM {
+            display: flex;
+            border: solid; 
+            border-color: black;
+            padding: 5px;
+            margin-top: 5px;
+            flex-direction: column;
+            align-items: center;
+        }
+        .formABMInputs {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .formABMBotones {
+            display: flex;
+            justify-content: space-around;
+            align-content: space-around;
+        }
+        .formABMBotones button {
+            margin: 0 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: flex;
+        }
+        .formDatos.visible, .formABM.visible {
+            display: flex;
+        }
+
+        
+        .botonesForms{
+            border-radius: 10px;
+        }
+        .botonesForms:hover{
+            background-color: bisque;
+            border: 2px solid firebrick;
+            
+        }
+
+    </style>
+</head>
+<body>
+    <form class="formDatos visible">
+        <div class="formDatosLabels">
+            <p class="formDatosTitulo">Form Datos</p>
+            <label>Filtrar Por:</label>
+            <select id="filtroSelect" onchange="mostrarFilas(this.value)">
+                <option value="filtroTodos">Todos</option>
+                <option value="filtroCamiones">Camiones</option>
+                <option value="filtroAutos">Autos</option>
+            </select>
+            <br>
+            <div>
+                <label>Calcular Velocidad Maxima Promedio:
+                    <input id="inputCalcVelMax">
+                    <button id="btnCalcVelMax" onclick="calcularVelocidadPromedio(); return false;">Calcular</button>
+                </label>
+            </div>
+        </div>
+        <div class="checkboxesFormDatos">
+            <label>Mostrar columnas:
+                <br>
+                <label>
+                    <input type="checkbox" name ="id" id="cbID" checked>
+                    ID
+                </label>
+                <label>
+                    <input type="checkbox" name="modelo" id="cbModelo" checked>
+                    Modelo
+                </label>
+                <label>
+                    <input type="checkbox" name="anoFabricacion" id="cbAnoFabricacion" checked>
+                    Año Fabricacion
+                </label>
+                <label>
+                    <input type="checkbox" name="velMax" id="cbVelMax" checked>
+                    Velocidad Maxima
+                </label>
+                <label>
+                    <input type="checkbox" name="cantPuertas" id="cbCantPuertas" checked>
+                    Cant Puertas / Carga
+                </label>
+                <label>
+                    <input type="checkbox" name="asientos" id="cbAsientos" checked>
+                    Asientos / Autonomia
+                </label>
+            </label>
+        </div>
+        <div class="tablaForm">
+            <table class="tablaPersonas">
+                <thead>
+                    <tr>
+                        <th class="id-col">
+                            <button id="btnID_formDatos" onclick="ordenarTabla('id'); return false;">ID</button>
+                        </th>
+                        <th class="id-modelo">
+                            <button id="btnNombre_formDatos" onclick="ordenarTabla('modelo'); return false;">Modelo</button>
+                        </th>
+                        <th class="id-anoFabricacion">
+                            <button id="btnApellido_formDatos" onclick="ordenarTabla('anoFabricacion'); return false;">Año Fabricacion</button>
+                        </th>
+                        <th class="id-velMax"> 
+                            <button id="btnEdad_formDatos" onclick="ordenarTabla('velMax'); return false;">Velocidad Maxima</button>
+                        </th>
+                        <th class="id-cantPuertas">
+                            <button id="btnDNI_formDatos" onclick="ordenarTabla('puertasCarga'); return false;">CantPuertas/Carga</button>
+                        </th>
+                        <th class="id-asientos">
+                            <button id="btnPais_formDatos" onclick="ordenarTabla('asientosAutonomia'); return false;">Asientos/Autonomia</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    </tr>   
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <button class="botonesForms" onclick="ocultarFormDatos(); return false;">Agregar</button>
+    </form> 
+    
+    <form class="formABM hidden">
+        <div class="formABMInputs">
+            <h1>Formulario ABM</h1>
+            <label>ID: 
+                <input id="inputID_ABM" disabled>
+            </label>
+            <br>
+            <label>Modelo:
+                <input id="inputModelo_ABM">
+            </label>
+            <br>
+            <label>Año Fabricacion:
+                <input id="inputAno_ABM">
+            </label>
+            <br>
+            <label>Velocidad Maxima:
+                <input id="inputVelMax_ABM">
+            </label>
+            <br>
+            <label>Tipo: </label>
+            <select id="filtroTipoABM">
+                <option value="filtroAuto">Auto</option>
+                <option value="filtroCamion">Camion</option>
+            </select>
+            <br>
+            <label>Cant Puertas / Carga:
+                <input id="inputCantPuertasCarga_ABM">
+            </label>
+            <br>
+            <label>Asientos / Autonomia:
+                <input id="inputAsientosAutonomia_ABM">
+            </label>
+            <br>
+        </div>
+        <div class="formABMBotones">
+            <button class="botonesForms" id="btnCrearABM" onclick="crearVehiculo(); return false;">Crear</button>
+            <button class="botonesForms" id="btnModificarABM" onclick="modificarVehiculo(); return false;">Modificar</button>
+            <button class="botonesForms" id="btnEliminarABM" onclick="eliminarVehiculo(); return false;">Eliminar</button>
+            <button class="botonesForms" id="btnCancelarABM" onclick="cancelarABM(); return false;">Cancelar</button>
+        </div>
+    </form> 
+
+    <script>
+
+        const filtro = document.getElementById("filtroSelect");
+        const autos = [];
+        const camiones = [];
+        var cadena = '[{"id":1,"modelo":"Fiat100","anoFabricacion":1987,"velMax":60,"cantidadPuertas":4,"asientos":4},{"id":2,"modelo":"FordMustang","anoFabricacion":1960,"velMax":100,"cantidadPuertas":2,"asientos":2},{"id":3,"modelo":"FerraryF100","anoFabricacion":1999,"velMax":200,"cantidadPuertas":2,"asientos":2},{"id":4,"modelo":"Escania","anoFabricacion":1987,"velMax":60,"carga":5550,"autonomia":300},{"id":5,"modelo":"DodgeRam","anoFabricacion":1970,"velMax":100,"carga":2333,"autonomia":400},{"id":666,"modelo":"ChevySilverado","anoFabricacion":1994,"velMax":80,"carga":1000,"autonomia":450}]';
+        const objetos = JSON.parse(cadena);
+        const anioActual = 2024;
+
+        class Vehiculo {
+            constructor(id, modelo, anoFabricacion, velMax) {
+                this.id = id;
+                this.modelo = modelo;
+                this.anoFabricacion = anoFabricacion;
+                this.velMax = velMax;
+            }
+        }
+
+        class Auto extends Vehiculo {
+            constructor(id, modelo, anoFabricacion, velMax, cantidadPuertas, asientos) {
+                super(id, modelo, anoFabricacion, velMax);
+                this.cantidadPuertas = cantidadPuertas; 
+                this.asientos = asientos;
+            }    
+ 
+        }
+
+        class Camion extends Vehiculo {
+            constructor(id, modelo, anoFabricacion, velMax, carga, autonomia) {
+                super(id, modelo, anoFabricacion, velMax);
+                this.carga = carga; 
+                this.autonomia = autonomia;
+            }     
+            
+        }
+
+        function ocultarFormDatos() {
+            var formDatos = document.querySelector(".formDatos");
+            var formABM = document.querySelector(".formABM");
+
+            formDatos.classList.toggle("hidden");
+            formABM.classList.toggle("hidden");
+
+            formDatos.classList.toggle("visible");
+            formABM.classList.toggle("visible");
+        }
+
+        function cancelarABM() {
+            var formDatos = document.querySelector(".formDatos");
+            var formABM = document.querySelector(".formABM");
+
+            formDatos.classList.toggle("hidden");
+            formABM.classList.toggle("hidden");
+
+            formDatos.classList.toggle("visible");
+            formABM.classList.toggle("visible");
+        }
+
+    
+
+        function crearVehiculo() {
+            let id = obtenerIDMaximo();
+            modelo = document.getElementById("inputModelo_ABM").value;
+            anoFabricacion = document.getElementById("inputAno_ABM").value;
+            velMax = document.getElementById("inputVelMax_ABM").value;
+            filtroTipoABM = document.getElementById("filtroTipoABM").value;
+            cantPuertasCarga = document.getElementById("inputCantPuertasCarga_ABM").value;
+            asientosAutonomia = document.getElementById("inputAsientosAutonomia_ABM").value;
+
+            let vehiculo;
+
+            if (filtroTipoABM == "filtroAuto") {
+                vehiculo = new Auto(id, modelo, anoFabricacion, velMax, cantPuertasCarga, asientosAutonomia);
+                autos.push(vehiculo);
+                objetos.push(vehiculo);
+                console.log(vehiculo)
+            } else if (filtroTipoABM == "filtroCamion") {
+                vehiculo = new Camion(id, modelo, anoFabricacion, velMax, cantPuertasCarga, asientosAutonomia);
+                camiones.push(vehiculo);
+                objetos.push(vehiculo)
+            }
+
+            renderizarTabla();
+            cancelarABM();
+        }
+
+
+        function modificarVehiculo() {
+            let id = parseInt(document.getElementById("inputID_ABM").value);
+            let modelo = document.getElementById("inputModelo_ABM").value;
+            let anoFabricacion = document.getElementById("inputAno_ABM").value;
+            let velMax = document.getElementById("inputVelMax_ABM").value;
+            let tipo = document.getElementById("filtroTipoABM").value;
+            let cantPuertasCarga = document.getElementById("inputCantPuertasCarga_ABM").value;
+            let asientosAutonomia = document.getElementById("inputAsientosAutonomia_ABM").value;
+
+            let vehiculo = objetos.find(v => v.id === id);
+            vehiculo.modelo = modelo;
+            vehiculo.anoFabricacion = anoFabricacion;
+            vehiculo.velMax = velMax;
+
+            if (vehiculo instanceof Auto) {
+                vehiculo.cantidadPuertas = cantPuertasCarga;
+                vehiculo.asientos = asientosAutonomia;
+            } else if (vehiculo instanceof Camion) {
+                vehiculo.carga = cantPuertasCarga;
+                vehiculo.autonomia = asientosAutonomia;
+            }
+            cancelarABM();
+            renderizarTabla();
+            
+        }
+
+        function eliminarPersona() {
+            let id = parseInt(document.querySelector("#inputID_ABM").value);
+
+            objetos.forEach(function(objeto, index) {
+                if (objeto.id === id) {
+                    console.log("Encontrado:", objeto);
+                    objetos.splice(index, 1); 
+                }
+            });
+            cancelarABM();
+            renderizarTabla();
+
+        }
+
+        function eliminarVehiculo() {
+            let id = parseInt(document.getElementById("inputID_ABM").value);
+
+            objetos.forEach(function(objeto, index) {
+                if (objeto.id === id) {
+                    console.log("Encontrado:", objeto);
+                    objetos.splice(index, 1); 
+                }
+            });
+            cancelarABM();
+            renderizarTabla();
+        }
+
+        function obtenerIDMaximo() {
+            let id = 0;
+            objetos.forEach(function(objeto) {
+                if (objeto.id > id) {
+                    id = objeto.id;
+                }
+            });
+            return id + 1;
+        }
+
+        function calcularVelocidadPromedio(){
+            
+            let promedio = 0;
+
+            if(filtro.value == 'filtroTodos') {
+                let promedioAutos = autos.reduce((suma, auto) => suma + auto.velMax, 0) / autos.length;
+                let promedioCamiones = camiones.reduce((suma, camion) => suma + camion.velMax, 0) / camiones.length;
+                promedio = (promedioAutos + promedioCamiones) / 2;
+            }
+            if (filtro.value =='filtroAutos') {
+                promedio = autos.reduce((suma, auto) => suma + auto.velMax, 0) / autos.length;
+            } 
+            else if(filtro.value =='filtroCamiones') {
+                promedio = camiones.reduce((suma, camion) => suma + camion.velMax, 0) / camiones.length;
+            }
+            
+            const inputPromedio = document.getElementById('inputCalcVelMax');
+            inputPromedio.value = promedio;
+        }  
+
+        function ordenarTabla(columna) {
+
+            if (columna == "puertasCarga") {
+                objetos.sort(function(a, b) {
+                    if (a instanceof Auto && b instanceof Auto) {
+                        return a.cantidadPuertas - b.cantidadPuertas;
+                    } else if (a instanceof Camion && b instanceof Camion) {
+                        return a.carga - b.carga;
+                    } else if (a instanceof Auto) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+            } else if (columna == "asientosAutonomia") {
+                objetos.sort(function(a, b) {
+                    if (a instanceof Auto && b instanceof Auto) {
+                        return a.asientos - b.asientos;
+                    } else if (a instanceof Camion && b instanceof Camion) {
+                        return a.autonomia - b.autonomia;
+                    } else if (a instanceof Auto) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+            }else{
+                objetos.sort(function(a, b) {
+                if (a[columna] < b[columna]) {
+                    return -1;
+                }
+                if (a[columna] > b[columna]) {
+                    return 1;
+                }
+                return 0;
+            });
+            }
+
+            renderizarTabla();
+        }
+
+
+        function mostrarFilas(filtro) {
+            renderizarTabla();
+            var filas = document.querySelectorAll(".tablaPersonas tbody tr");
+
+            filas.forEach(function(fila) {
+                fila.style.display = "";
+                if (filtro == "filtroAutos" && !fila.classList.contains("auto")) {
+                    fila.style.display = "none";
+                } else if (filtro == "filtroCamiones" && !fila.classList.contains("camion")) {
+                    fila.style.display = "none";
+                }
+            });
+        }
+
+
+        function mostrarDatosFormABM(vehiculo) {
+            document.getElementById("inputID_ABM").value = vehiculo.id;
+            document.getElementById("inputModelo_ABM").value = vehiculo.modelo;
+            document.getElementById("inputAno_ABM").value = vehiculo.anoFabricacion;
+            document.getElementById("inputVelMax_ABM").value = vehiculo.velMax;
+
+            if (vehiculo instanceof Auto) {
+                document.getElementById("filtroTipoABM").value = "filtroAuto";
+                document.getElementById("inputCantPuertasCarga_ABM").value = vehiculo.cantidadPuertas;
+                document.getElementById("inputAsientosAutonomia_ABM").value = vehiculo.asientos;
+
+            } else if (vehiculo instanceof Camion) {
+                document.getElementById("filtroTipoABM").value = "filtroCamion";
+                document.getElementById("inputCantPuertasCarga_ABM").value = vehiculo.carga;
+                document.getElementById("inputAsientosAutonomia_ABM").value = vehiculo.autonomia;
+     
+            }
+
+            document.querySelector(".formABM").classList.remove("hidden");
+            document.querySelector(".formDatos").classList.add("hidden");
+        }
+
+
+
+        function renderizarTabla() {
+            const cuerpoTabla = document.querySelector(".tablaPersonas tbody");
+            cuerpoTabla.innerHTML = "";
+
+            objetos.forEach((vehiculo) => {
+                const fila = document.createElement("tr");
+                fila.classList.add(vehiculo instanceof Auto ? "auto" : "camion");
+                fila.innerHTML = `
+                    <td class="id-col">${vehiculo.id}</td>
+                    <td class="id-modelo">${vehiculo.modelo}</td>
+                    <td class="id-anoFabricacion">${vehiculo.anoFabricacion}</td>
+                    <td class="id-velMax">${vehiculo.velMax}</td>
+                    <td class="id-cantPuertas">${vehiculo instanceof Auto ? vehiculo.cantidadPuertas : vehiculo.carga}</td>
+                    <td class="id-asientos">${vehiculo instanceof Auto ? vehiculo.asientos : vehiculo.autonomia}</td>
+                `;
+                fila.addEventListener("dblclick", function() {
+                    ocultarFormDatos();
+                    mostrarDatosFormABM(vehiculo);
+                });
+                cuerpoTabla.appendChild(fila);
+            });
+        }
+
+
+        function actualizarColumnas() {
+            var columnas = [
+                { checkbox: document.getElementById("cbID"), clase: "id-col" },
+                { checkbox: document.getElementById("cbModelo"), clase: "id-modelo" },
+                { checkbox: document.getElementById("cbAnoFabricacion"), clase: "id-anoFabricacion" },
+                { checkbox: document.getElementById("cbVelMax"), clase: "id-velMax" },
+                { checkbox: document.getElementById("cbCantPuertas"), clase: "id-cantPuertas" },
+                { checkbox: document.getElementById("cbAsientos"), clase: "id-asientos" }
+            ];
+
+            columnas.forEach(function(columna) {
+                var celdas = document.querySelectorAll("." + columna.clase);
+                celdas.forEach(function(celda) {
+                    celda.style.display = columna.checkbox.checked ? "" : "none";
+                });
+            });
+        }
+
+        document.querySelectorAll(".checkboxesFormDatos input[type='checkbox']").forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                renderizarTabla();
+                actualizarColumnas();
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            objetos.forEach(function(obj) {
+                if (obj.cantidadPuertas && obj.asientos) {
+                    let auto = new Auto(obj.id, obj.modelo, obj.anoFabricacion, obj.velMax, obj.cantidadPuertas, obj.asientos);
+                    autos.push(auto);
+                    objetos[objetos.indexOf(obj)] = auto; 
+                } else {
+                    let camion = new Camion(obj.id, obj.modelo, obj.anoFabricacion, obj.velMax, obj.carga, obj.autonomia);
+                    camiones.push(camion);
+                    objetos[objetos.indexOf(obj)] = camion; 
+                }
+            });
+            renderizarTabla();
+        });
+        
+    </script>
+</body>
+</html>
