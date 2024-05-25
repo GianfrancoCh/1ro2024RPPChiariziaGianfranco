@@ -301,7 +301,7 @@
                 anoFabricacion < 1985 ||
                 velMax <= 0 ||
                 (cantPuertasCarga < 2 && filtroTipoABM === "filtroAuto") ||
-                (asientosAutonomia <= 2 && filtroTipoABM === "filtroAuto") ||
+                (asientosAutonomia < 2 && filtroTipoABM === "filtroAuto") ||
                 (cantPuertasCarga <= 0 && filtroTipoABM === "filtroCamion") ||
                 (asientosAutonomia <= 0 && filtroTipoABM === "filtroCamion") ||
                 modelo.trim() === "" ||
@@ -314,14 +314,15 @@
                 return;
             }
 
-
             let vehiculo;
+            velMax = parseInt(velMax);
 
             if (filtroTipoABM == "filtroAuto") {
                 vehiculo = new Auto(id, modelo, anoFabricacion, velMax, cantPuertasCarga, asientosAutonomia);
                 autos.push(vehiculo);
                 objetos.push(vehiculo);
-                console.log(vehiculo)
+                console.log(camiones)
+                console.log(autos)
             } else if (filtroTipoABM == "filtroCamion") {
                 vehiculo = new Camion(id, modelo, anoFabricacion, velMax, cantPuertasCarga, asientosAutonomia);
                 camiones.push(vehiculo);
@@ -336,7 +337,7 @@
         function modificarVehiculo() {
             let id = parseInt(document.getElementById("inputID_ABM").value);
             let modelo = document.getElementById("inputModelo_ABM").value;
-            let anoFabricacion = document.getElementById("inputAno_ABM").value;
+            let anoFabricacion = document.querySelector("#inputAno_ABM").value;
             let velMax = document.getElementById("inputVelMax_ABM").value;
             let tipo = document.getElementById("filtroTipoABM").value;
             let cantPuertasCarga = document.getElementById("inputCantPuertasCarga_ABM").value;
@@ -345,7 +346,7 @@
             let vehiculo = objetos.find(v => v.id === id);
             vehiculo.modelo = modelo;
             vehiculo.anoFabricacion = anoFabricacion;
-            vehiculo.velMax = velMax;
+            vehiculo.velMax = parseInt(velMax);
 
             if (vehiculo instanceof Auto) {
                 vehiculo.cantidadPuertas = cantPuertasCarga;
@@ -399,6 +400,7 @@
         function calcularVelocidadPromedio(){
             
             let promedio = 0;
+            console.log(objetos)
 
             if(filtro.value == 'filtroTodos') {
                 let promedioAutos = autos.reduce((suma, auto) => suma + auto.velMax, 0) / autos.length;
