@@ -175,7 +175,7 @@
             </table>
         </div>
         <br>
-        <button class="botonesForms" onclick="ocultarFormDatos(); return false;">Agregar</button>
+        <button class="botonesForms" onclick="ocultarFormDatos();limpiarInputs();return false;">Agregar</button>
     </form> 
     
     <form class="formABM hidden">
@@ -216,7 +216,7 @@
             <button class="botonesForms" id="btnCrearABM" onclick="crearVehiculo(); return false;">Crear</button>
             <button class="botonesForms" id="btnModificarABM" onclick="modificarVehiculo(); return false;">Modificar</button>
             <button class="botonesForms" id="btnEliminarABM" onclick="eliminarVehiculo(); return false;">Eliminar</button>
-            <button class="botonesForms" id="btnCancelarABM" onclick="cancelarABM(); return false;">Cancelar</button>
+            <button class="botonesForms" id="btnCancelarABM" onclick="limpiarInputs(), cancelarABM(); return false">Cancelar</button>
         </div>
     </form> 
 
@@ -279,8 +279,16 @@
         }
 
     
+        function limpiarInputs() {
+            document.getElementById("inputModelo_ABM").value = "";
+            document.getElementById("inputAno_ABM").value = "";
+            document.getElementById("inputVelMax_ABM").value = "";
+            document.getElementById("inputCantPuertasCarga_ABM").value = "";
+            document.getElementById("inputAsientosAutonomia_ABM").value = "";
+        }
 
         function crearVehiculo() {
+
             let id = obtenerIDMaximo();
             modelo = document.getElementById("inputModelo_ABM").value;
             anoFabricacion = document.getElementById("inputAno_ABM").value;
@@ -288,6 +296,24 @@
             filtroTipoABM = document.getElementById("filtroTipoABM").value;
             cantPuertasCarga = document.getElementById("inputCantPuertasCarga_ABM").value;
             asientosAutonomia = document.getElementById("inputAsientosAutonomia_ABM").value;
+
+            if (
+                anoFabricacion < 1985 ||
+                velMax <= 0 ||
+                (cantPuertasCarga < 2 && filtroTipoABM === "filtroAuto") ||
+                (asientosAutonomia <= 2 && filtroTipoABM === "filtroAuto") ||
+                (cantPuertasCarga <= 0 && filtroTipoABM === "filtroCamion") ||
+                (asientosAutonomia <= 0 && filtroTipoABM === "filtroCamion") ||
+                modelo.trim() === "" ||
+                anoFabricacion.trim() === "" ||
+                velMax.trim() === "" ||
+                cantPuertasCarga.trim() === "" ||
+                asientosAutonomia.trim() === ""
+            ) {
+                alert("Hay campos incorrectos");
+                return;
+            }
+
 
             let vehiculo;
 
